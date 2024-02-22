@@ -1,0 +1,29 @@
+import 'package:flutter/material.dart';
+import 'package:gemini_app/controller/gemini_provider.dart';
+import 'package:gemini_app/controller/user_provider.dart';
+import 'package:gemini_app/view/chat_page.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+void main() async {
+  await dotenv.load(fileName: "assets/.env");
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => GeminiProProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: ChatPage(),
+      ),
+    );
+  }
+}
