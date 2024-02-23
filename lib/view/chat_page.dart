@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gemini_app/controller/gemini_provider.dart';
 import 'package:gemini_app/models/chat_model.dart';
 import 'package:gemini_app/utils/constants.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 class ChatPage extends StatefulWidget {
@@ -29,27 +28,45 @@ class _ChatPageState extends State<ChatPage> {
     setState(() {
       _messages =
           Provider.of<GeminiProProvider>(context, listen: false).messages;
+      isLoading = false;
     });
   }
 
   sentMessage() async {
     if (_controller.text.isEmpty) return;
+
     _messages.add(
         ChatModel(text: _controller.text, time: DateTime.now(), isUser: true));
+    String text = _controller.text;
     _controller.clear();
+
     getChat();
+
     setState(() {
       isLoading = true;
     });
     await Provider.of<GeminiProProvider>(context, listen: false)
-        .sentMessage(_controller.text, DateTime.now());
+        .sentMessage(context, text, DateTime.now());
+    getChat();
+  }
+
+  deleteChat() {
+    Provider.of<GeminiProProvider>(context, listen: false).deleteChat();
     getChat();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Gemini Pro')),
+      appBar: AppBar(
+        title: const Text('Gemini Pro'),
+        actions: [
+          IconButton(
+            onPressed: deleteChat,
+            icon: const Icon(Icons.delete),
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           _messages.isEmpty
@@ -70,7 +87,6 @@ class _ChatPageState extends State<ChatPage> {
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: _messages.length,
                         itemBuilder: (BuildContext context, int index) {
-                          log(_messages.length.toString());
                           return Container(
                             margin: EdgeInsets.only(
                               left: _messages[index].isUser ? 30 : 10,
@@ -95,7 +111,7 @@ class _ChatPageState extends State<ChatPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(_messages[index].text),
+                                SelectableText(_messages[index].text),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
@@ -110,7 +126,14 @@ class _ChatPageState extends State<ChatPage> {
                           );
                         },
                       ),
-                      const SizedBox(height: 60)
+                      isLoading
+                          ? LoadingAnimationWidget.horizontalRotatingDots(
+                              color: Colors.blue[100] ?? Colors.blue, size: 80)
+                          // ? CircularProgressIndicator(
+                          //     color: Colors.blue[100],
+                          //   )
+                          : Container(),
+                      const SizedBox(height: 70)
                     ],
                   ),
                 ),
@@ -125,6 +148,7 @@ class _ChatPageState extends State<ChatPage> {
                   Expanded(
                     flex: 11,
                     child: TextFormField(
+                      textInputAction: TextInputAction.next,
                       controller: _controller,
                       decoration: const InputDecoration(
                           hintText: "Enter your prompt",
@@ -141,7 +165,7 @@ class _ChatPageState extends State<ChatPage> {
                     flex: 2,
                     child: IconButton(
                       onPressed: sentMessage,
-                      icon: Icon(Icons.send),
+                      icon: const Icon(Icons.send),
                       highlightColor: Colors.blue,
                     ),
                   ),

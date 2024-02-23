@@ -8,15 +8,36 @@ class GeminiProProvider extends ChangeNotifier {
 
   List<ChatModel> get messages => _messages;
 
-  Future<void> sentMessage(String prompt, DateTime time) async {
+  deleteChat() {
+    _messages.clear();
+  }
+
+  Future<void> sentMessage(
+      BuildContext context, String prompt, DateTime time) async {
     final apiKey = dotenv.env['API_KEY'] ?? "";
-    final model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
-    final content = [Content.text(prompt)];
-    final response = await model.generateContent(content);
+    try {
+      final model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
+      final content = [Content.text(prompt)];
 
-    _messages.add(ChatModel(
-        text: response.text.toString(), time: DateTime.now(), isUser: false));
+      final response = await model.generateContent(content);
 
-    notifyListeners();
+      _messages.add(ChatModel(
+          text: response.text ?? "no response",
+          time: DateTime.now(),
+          isUser: false));
+
+      notifyListeners();
+    } catch (err) {
+      AlertDialog(
+        title: Text(err.toString()),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'))
+        ],
+      );
+    }
   }
 }
