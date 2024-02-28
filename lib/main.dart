@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gemini_app/controller/gemini_provider.dart';
 import 'package:gemini_app/controller/user_provider.dart';
-import 'package:gemini_app/view/chat_page.dart';
+import 'package:gemini_app/view/homepage.dart';
+import 'package:gemini_app/view/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -22,7 +23,7 @@ class MainApp extends StatelessWidget {
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: ChatPage(),
+        home: SplashScreen(), 
       ),
     );
   }
