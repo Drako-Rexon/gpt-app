@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gemini_app/controller/gemini_provider.dart';
 import 'package:gemini_app/models/chat_model.dart';
 import 'package:gemini_app/utils/constants.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class ChatPage extends StatefulWidget {
@@ -24,41 +25,14 @@ class _ChatPageState extends State<ChatPage> {
     getChat();
   }
 
-  getChat() async {
-    setState(() {
-      _messages =
-          Provider.of<GeminiProProvider>(context, listen: false).messages;
-      isLoading = false;
-    });
-  }
-
-  sentMessage() async {
-    if (_controller.text.isEmpty) return;
-
-    _messages.add(
-        ChatModel(text: _controller.text, time: DateTime.now(), isUser: true));
-    String text = _controller.text;
-    _controller.clear();
-
-    getChat();
-
-    setState(() {
-      isLoading = true;
-    });
-    await Provider.of<GeminiProProvider>(context, listen: false)
-        .sentMessage(context, text, DateTime.now());
-    getChat();
-  }
-
-  deleteChat() {
-    Provider.of<GeminiProProvider>(context, listen: false).deleteChat();
-    getChat();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        forceMaterialTransparency: true,
+        shadowColor: Colors.blue,
+        elevation: 4,
+        // backgroundColor: Colors.blue,
         title: const Text('Gemini Pro'),
         actions: [
           IconButton(
@@ -79,64 +53,89 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                   ),
                 )
-              : SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _messages.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            margin: EdgeInsets.only(
-                              left: _messages[index].isUser ? 30 : 10,
-                              right: _messages[index].isUser ? 10 : 30,
-                              top: 10,
-                              bottom: 10,
-                            ),
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: Colors.blue[100],
-                              borderRadius: BorderRadius.only(
-                                topRight: _messages[index].isUser
-                                    ? const Radius.circular(0)
-                                    : const Radius.circular(14),
-                                topLeft: _messages[index].isUser
-                                    ? const Radius.circular(14)
-                                    : const Radius.circular(0),
-                                bottomLeft: const Radius.circular(14),
-                                bottomRight: const Radius.circular(14),
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(_messages[index].text),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      "${_messages[index].time.hour}:${_messages[index].time.minute}",
-                                      textAlign: TextAlign.end,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          );
-                        },
+              : Container(),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _messages.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: EdgeInsets.only(
+                        left: _messages[index].isUser ? 30 : 10,
+                        right: _messages[index].isUser ? 10 : 30,
+                        top: 10,
+                        bottom: 10,
                       ),
-                      isLoading
-                          ? LoadingAnimationWidget.horizontalRotatingDots(
-                              color: Colors.blue[100] ?? Colors.blue, size: 80)
-                          // ? CircularProgressIndicator(
-                          //     color: Colors.blue[100],
-                          //   )
-                          : Container(),
-                      const SizedBox(height: 70)
-                    ],
-                  ),
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: Colors.blue[100],
+                        borderRadius: BorderRadius.only(
+                          topRight: _messages[index].isUser
+                              ? const Radius.circular(0)
+                              : const Radius.circular(14),
+                          topLeft: _messages[index].isUser
+                              ? const Radius.circular(14)
+                              : const Radius.circular(0),
+                          bottomLeft: const Radius.circular(14),
+                          bottomRight: const Radius.circular(14),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.blue[100]!,
+                            blurRadius: 6,
+                            spreadRadius: 2.0,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                  onPressed: () async {
+                                    await Clipboard.setData(ClipboardData(
+                                        text: _messages[index].text));
+                                  },
+                                  icon: const Icon(Icons.edit)),
+                              IconButton(
+                                  onPressed: () async {
+                                    await Clipboard.setData(ClipboardData(
+                                            text: _messages[index].text))
+                                        .then((_) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  'Copied to your clipboard !')));
+                                    });
+                                  },
+                                  icon: const Icon(Icons.copy)),
+                              Text(
+                                "${_messages[index].time.hour}:${_messages[index].time.minute}",
+                                textAlign: TextAlign.end,
+                              ),
+                            ],
+                          ),
+                          SelectableText(_messages[index].text),
+                        ],
+                      ),
+                    );
+                  },
                 ),
+                isLoading
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        child: Lottie.asset('assets/animation/loading-1.json'))
+                    : Container(),
+                const SizedBox(height: 70)
+              ],
+            ),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -164,6 +163,7 @@ class _ChatPageState extends State<ChatPage> {
                   Expanded(
                     flex: 2,
                     child: IconButton(
+                      splashColor: Colors.blue[100],
                       onPressed: sentMessage,
                       icon: const Icon(Icons.send),
                       highlightColor: Colors.blue,
@@ -176,5 +176,36 @@ class _ChatPageState extends State<ChatPage> {
         ],
       ),
     );
+  }
+
+  void getChat() {
+    setState(() {
+      _messages =
+          Provider.of<GeminiProProvider>(context, listen: false).messages;
+      isLoading = false;
+    });
+  }
+
+  void sentMessage() async {
+    if (_controller.text.isEmpty) return;
+
+    _messages.add(
+        ChatModel(text: _controller.text, time: DateTime.now(), isUser: true));
+    String text = _controller.text;
+    _controller.clear();
+
+    getChat();
+
+    setState(() {
+      isLoading = true;
+    });
+    await Provider.of<GeminiProProvider>(context, listen: false)
+        .sentMessage(context, text, DateTime.now());
+    getChat();
+  }
+
+  void deleteChat() {
+    Provider.of<GeminiProProvider>(context, listen: false).deleteChat();
+    getChat();
   }
 }

@@ -8,7 +8,7 @@ class GeminiProProvider extends ChangeNotifier {
 
   List<ChatModel> get messages => _messages;
 
-  deleteChat() {
+  void deleteChat() {
     _messages.clear();
   }
 

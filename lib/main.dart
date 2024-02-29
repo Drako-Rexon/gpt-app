@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gemini_app/controller/gemini_provider.dart';
+import 'package:gemini_app/controller/internet_provider.dart';
 import 'package:gemini_app/controller/user_provider.dart';
-import 'package:gemini_app/view/homepage.dart';
 import 'package:gemini_app/view/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -20,10 +20,14 @@ class MainApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => GeminiProProvider()),
+        ChangeNotifierProvider(create: (_) => InternetProvider()),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
+        theme: ThemeData(
+            // textTheme: TextTheme().apply(displayColor: Colors.white),
+            ),
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(), 
+        home: const SplashScreen(),
       ),
     );
   }
