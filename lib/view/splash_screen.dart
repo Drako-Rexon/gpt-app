@@ -20,7 +20,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   navigationToPage() async {
-    // bool internetResult =
     await Provider.of<InternetProvider>(context, listen: false)
         .checkInternet()
         .then((value) {
@@ -33,10 +32,6 @@ class _SplashScreenState extends State<SplashScreen> {
             (route) => false);
       });
     });
-
-    // Future.delayed(
-    //     const Duration(seconds: 2),
-    //     () => );
   }
 
   @override

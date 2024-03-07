@@ -26,9 +26,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       drawer: Drawer(
         shadowColor: Colors.white,
-        child: Container(
-            // color: Colors.yellow,
-            ),
+        child: Container(),
       ),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
@@ -80,31 +78,31 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              // InkWell(
-              //   overlayColor: MaterialStateProperty.all(Colors.transparent),
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(builder: (_) => const ImageToPDF()),
-              //     );
-              //   },
-              //   child: Container(
-              //     padding: const EdgeInsets.all(20),
-              //     height: 200,
-              //     width: (MediaQuery.of(context).size.width / 2) - 30,
-              //     margin:
-              //         const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              //     decoration: BoxDecoration(
-              //         color: Colors.blue[100],
-              //         borderRadius:
-              //             const BorderRadius.all(Radius.circular(18))),
-              //     child: SvgPicture.asset(
-              //       'assets/svg/pdf.svg',
-              //       height: 120,
-              //       width: 120,
-              //     ),
-              //   ),
-              // ),
+              InkWell(
+                overlayColor: MaterialStateProperty.all(Colors.transparent),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ImageToPDF()),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  height: 200,
+                  width: (MediaQuery.of(context).size.width / 2) - 30,
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                  decoration: BoxDecoration(
+                      color: Colors.blue[100],
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(18))),
+                  child: SvgPicture.asset(
+                    'assets/svg/pdf.svg',
+                    height: 120,
+                    width: 120,
+                  ),
+                ),
+              ),
             ],
           )
         ],
