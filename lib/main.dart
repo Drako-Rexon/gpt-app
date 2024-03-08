@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gemini_app/controller/gemini_provider.dart';
 import 'package:gemini_app/controller/internet_provider.dart';
+import 'package:gemini_app/controller/permission_provider.dart';
 import 'package:gemini_app/controller/user_provider.dart';
 import 'package:gemini_app/view/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,7 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => GeminiProProvider()),
         ChangeNotifierProvider(create: (_) => InternetProvider()),
+        ChangeNotifierProvider(create: (_) => PermissionProvider()),
       ],
       child: MaterialApp(
         theme: ThemeData(
