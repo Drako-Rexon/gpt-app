@@ -1,12 +1,84 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gemini_app/view/chat_page.dart';
 import 'package:gemini_app/view/help_page.dart';
 import 'package:gemini_app/view/image_to_pdf.dart';
 import 'package:gemini_app/view/terms_and_conditions.dart';
+import 'package:local_auth/local_auth.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late final LocalAuthentication auth;
+  bool _supportState = false;
+
+  @override
+  void initState() {
+    super.initState();
+    auth = LocalAuthentication();
+    auth.isDeviceSupported().then((bool value) {
+      setState(() {
+        _supportState = value;
+      });
+
+      if (value) {
+        Fluttertoast.showToast(
+            msg: "It is supported",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        Fluttertoast.showToast(
+            msg: "The decvice is not supported for biometric",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    });
+
+    _getAvailableBiometric();
+  }
+
+  Future<void> _authenticate() async {
+    try {
+      bool authenticated = await auth.authenticate(
+          localizedReason: 'Please login to enter the app',
+          options: const AuthenticationOptions(
+              biometricOnly: false, stickyAuth: true));
+
+      log(authenticated.toString());
+    } on PlatformException catch (err) {
+      log(err.message!);
+    }
+  }
+
+  void _getAvailableBiometric() async {
+    List<BiometricType> availableBiometric =
+        await auth.getAvailableBiometrics();
+
+    log(availableBiometric.toString());
+
+    if (!mounted) {
+      return;
+    }
+
+    _authenticate();
+  }
 
   void handleClick(String value, BuildContext context) {
     switch (value) {
@@ -39,7 +111,7 @@ class HomePage extends StatelessWidget {
               handleClick(choice, context);
             },
             itemBuilder: (BuildContext context) {
-              return {'Help', 'Terms & Conditions'}.map((String choice) {
+              return ['Help', 'Terms & Conditions'].map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
