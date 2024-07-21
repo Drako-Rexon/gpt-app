@@ -1,19 +1,25 @@
 import 'dart:developer';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gemini_app/controller/gemini_provider.dart';
-import 'package:gemini_app/controller/internet_provider.dart';
-import 'package:gemini_app/controller/permission_provider.dart';
-import 'package:gemini_app/controller/user_provider.dart';
-import 'package:gemini_app/view/sign_in.dart';
+import 'package:gemini_app/providers/gemini_provider.dart';
+import 'package:gemini_app/providers/internet_provider.dart';
+import 'package:gemini_app/providers/permission_provider.dart';
+import 'package:gemini_app/providers/user_provider.dart';
+import 'package:gemini_app/firebase_options.dart';
+import 'package:gemini_app/view/auth/sign_in.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
+  Provider.debugCheckInvalidValueType = null;
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await dotenv.load(fileName: "assets/.env");
   runApp(const MainApp());
 }
@@ -37,25 +43,26 @@ class _MainAppState extends State<MainApp> {
       // setState(() {
       //   _supportState = value;
       // });
-      if (value) {
-        Fluttertoast.showToast(
-            msg: "It is supported",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      } else {
-        Fluttertoast.showToast(
-            msg: "The decvice is not supported for biometric",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      }
+
+      // if (value) {
+      //   Fluttertoast.showToast(
+      //       msg: "It is supported",
+      //       toastLength: Toast.LENGTH_SHORT,
+      //       gravity: ToastGravity.CENTER,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: Colors.red,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      // } else {
+      //   Fluttertoast.showToast(
+      //       msg: "The decvice is not supported for biometric",
+      //       toastLength: Toast.LENGTH_SHORT,
+      //       gravity: ToastGravity.CENTER,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: Colors.red,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      // }
     });
 
     _getAvailableBiometric();
@@ -75,7 +82,7 @@ class _MainAppState extends State<MainApp> {
             // textTheme: TextTheme().apply(displayColor: Colors.white),
             ),
         debugShowCheckedModeBanner: false,
-        home: const SignInPage(),
+        home: SignInPage(),
       ),
     );
   }

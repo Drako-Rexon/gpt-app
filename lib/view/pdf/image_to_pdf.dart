@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:gemini_app/controller/pdf_provider.dart';
-import 'package:gemini_app/controller/permission_provider.dart';
+import 'package:gemini_app/providers/pdf_provider.dart';
+import 'package:gemini_app/providers/permission_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:media_scanner/media_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';

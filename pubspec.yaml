@@ -23,6 +23,12 @@ dependencies:
   media_scanner: ^2.1.0
   local_auth: ^2.2.0
   fluttertoast: ^8.2.6
+  # dependencies for To-Do app
+  # flutter_svg: ^2.0.10+1 # already exists
+  cloud_firestore: ^4.14.0
+  firebase_auth: ^4.16.0
+  firebase_core: ^2.24.2
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gemini_app/controller/internet_provider.dart';
+import 'package:gemini_app/providers/internet_provider.dart';
 import 'package:gemini_app/redirecting_page.dart';
 import 'package:gemini_app/view/extras/no_connection.dart';
 import 'package:lottie/lottie.dart';

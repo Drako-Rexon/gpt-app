@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gemini_app/controller/gemini_provider.dart';
+import 'package:gemini_app/providers/gemini_provider.dart';
 import 'package:gemini_app/models/chat_model.dart';
 import 'package:gemini_app/utils/constants.dart';
 import 'package:lottie/lottie.dart';
