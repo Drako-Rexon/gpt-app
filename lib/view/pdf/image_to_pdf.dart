@@ -20,7 +20,7 @@ class ImageToPDF extends StatefulWidget {
 }
 
 class _ImageToPDFState extends State<ImageToPDF> {
-  PDFProvider _image = PDFProvider();
+  final PDFProvider _image = PDFProvider();
   TextEditingController pdfName = TextEditingController();
 
   void getImageFromGallery() async {
@@ -51,7 +51,7 @@ class _ImageToPDFState extends State<ImageToPDF> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text('OK'))
+                    child: const Text('OK'))
               ],
             );
           });
@@ -77,13 +77,13 @@ class _ImageToPDFState extends State<ImageToPDF> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text('No image is clicked'),
+                title: const Text('No image is clicked'),
                 actions: [
                   TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text('OK'))
+                      child: const Text('OK'))
                 ],
               );
             });
@@ -99,7 +99,7 @@ class _ImageToPDFState extends State<ImageToPDF> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text('OK'))
+                    child: const Text('OK'))
               ],
             );
           });

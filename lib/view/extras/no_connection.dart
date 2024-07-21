@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gemini_app/view/splash_screen.dart';
+import 'package:gemini_app/view/extras/splash_screen.dart';
 import 'package:lottie/lottie.dart';
 
 class NoConnectionPage extends StatelessWidget {

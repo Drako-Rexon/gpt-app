@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gemini_app/controller/internet_provider.dart';
-import 'package:gemini_app/view/homepage.dart';
-import 'package:gemini_app/view/no_connection.dart';
+import 'package:gemini_app/redirecting_page.dart';
+import 'package:gemini_app/view/extras/no_connection.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
             context,
             MaterialPageRoute(
                 builder: (_) =>
-                    value ? const HomePage() : const NoConnectionPage()),
+                    value ? RedirectingPage() : const NoConnectionPage()),
             (route) => false);
       });
     });

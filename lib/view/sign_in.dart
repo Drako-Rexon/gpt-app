@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gemini_app/view/splash_screen.dart';
+import 'package:gemini_app/view/extras/splash_screen.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -13,8 +13,6 @@ class SignInPage extends StatelessWidget {
       body: Center(
         child: InkWell(
           onTap: () async {
-            // FirebaseAuth auth =
-            //     FirebaseAuth.instanceFor(app: await Firebase.initializeApp());
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (_) => const SplashScreen()),
