@@ -11,19 +11,43 @@ v0.2.0:
  - pdf generator has added
  - firebase removed
 
+v0.3.0:
+ - whatsapp status saver merged
+ - app drawer is functioning
+ - todo application is merged
+ - local auth added ( including biometric )
+
+
 ##Features:
 
-1. Gemini:
-The chatting interface for chatting with the gemini in this application
+1. Authentication:
+  - The local auth system verify the user using biometric and screen lock
+  - The below screenshot is given for the screen used in the application
 
-<!-- ![Screenshot 2](assets/images/2.jpg) -->
+  - ![Screenshot 1](assets/screenshots/Screenshot_1721625727.png)
 
-2. PDF:
-It can generate PDF files using images.
+  - The sign in method using itp verification is implemented
+  - The user need to login using the phone number
 
-<!-- ![Screenshot 1](assets/images/1.jpg) -->
+  - ![Screenshot 2](assets/screenshots/Screenshot_1721625757.png)
 
-3. Local Authorization:
-The app has ability to locally authorize the user usng screen lock or fingerprint scanning.
+2. Homepage:
+ - The homepage has the tile to access all the tools in the application
+ - The user currently has two optins like gemini and df generator
+ - The UI is so simple and easy
 
-<!-- ![Screenshot 2](assets/images/2.jpg) -->
+  - ![Screenshot 2](assets/screenshots/Screenshot_1721625775.png)
+
+3. Gemini:
+ - The first tile in the application represents the gemini chatting feature
+ - The chatting interface for chatting with the gemini in this application
+ - It is able to access the internet and answer the questions using gemini
+
+ - ![Screenshot 2](assets/screenshots/Screenshot_1721626559.png)
+
+4. PDF:
+ - The second tile in the application represents the PDF generator
+ - The application able to create PDF files with different images
+ - Clicked images are collected from the gallery and then it creates the PDF file
+
+ - ![Screenshot 1](assets/images/Screenshot_1721625840.png)
