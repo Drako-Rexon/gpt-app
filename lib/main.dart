@@ -3,12 +3,13 @@ import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gemini_app/providers/gemini_provider.dart';
 import 'package:gemini_app/providers/internet_provider.dart';
 import 'package:gemini_app/providers/permission_provider.dart';
+import 'package:gemini_app/providers/permission_whatsapp_provider.dart';
 import 'package:gemini_app/providers/user_provider.dart';
 import 'package:gemini_app/firebase_options.dart';
+import 'package:gemini_app/utils/popup.dart';
 import 'package:gemini_app/view/auth/sign_in.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
@@ -39,31 +40,7 @@ class _MainAppState extends State<MainApp> {
   void initState() {
     super.initState();
     auth = LocalAuthentication();
-    auth.isDeviceSupported().then((bool value) {
-      // setState(() {
-      //   _supportState = value;
-      // });
-
-      // if (value) {
-      //   Fluttertoast.showToast(
-      //       msg: "It is supported",
-      //       toastLength: Toast.LENGTH_SHORT,
-      //       gravity: ToastGravity.CENTER,
-      //       timeInSecForIosWeb: 1,
-      //       backgroundColor: Colors.red,
-      //       textColor: Colors.white,
-      //       fontSize: 16.0);
-      // } else {
-      //   Fluttertoast.showToast(
-      //       msg: "The decvice is not supported for biometric",
-      //       toastLength: Toast.LENGTH_SHORT,
-      //       gravity: ToastGravity.CENTER,
-      //       timeInSecForIosWeb: 1,
-      //       backgroundColor: Colors.red,
-      //       textColor: Colors.white,
-      //       fontSize: 16.0);
-      // }
-    });
+    auth.isDeviceSupported().then((bool value) {});
 
     _getAvailableBiometric();
   }
@@ -76,6 +53,8 @@ class _MainAppState extends State<MainApp> {
         ChangeNotifierProvider(create: (_) => GeminiProProvider()),
         ChangeNotifierProvider(create: (_) => InternetProvider()),
         ChangeNotifierProvider(create: (_) => PermissionProvider()),
+        // * whatsapp status saver provider
+        ChangeNotifierProvider(create: (_) => GetStatusProvider()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -89,14 +68,12 @@ class _MainAppState extends State<MainApp> {
 
   Future<void> _authenticate() async {
     try {
-      bool authenticated = await auth.authenticate(
+      await auth.authenticate(
           localizedReason: 'Please login to enter the app',
           options: const AuthenticationOptions(
               biometricOnly: false, stickyAuth: true));
-
-      log(authenticated.toString());
     } on PlatformException catch (err) {
-      log(err.message!);
+      popupWindow(context, err.details.toString(), err.message!);
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:gemini_app/view/extras/help_page.dart';
 import 'package:gemini_app/view/homepage/homepage.dart';
 import 'package:gemini_app/view/extras/terms_and_conditions.dart';
 import 'package:gemini_app/view/todo/todo_app_page.dart';
+import 'package:gemini_app/view/whatsapp_saver/whatsapp_saver.dart';
 
 class RedirectingPage extends StatefulWidget {
   const RedirectingPage({super.key});
@@ -17,11 +18,13 @@ class _RedirectingPageState extends State<RedirectingPage> {
   final List<String> _names = [
     'Home',
     'To-Do',
+    'WhatsApp Saver',
   ];
 
   final List _body = [
     const HomePage(),
     TodoPage(),
+    const WhatsappSaver(),
   ];
   int _index = 0;
 
