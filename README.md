@@ -17,6 +17,9 @@ v0.3.0:
  - todo application is merged
  - local auth added ( including biometric )
 
+v0.3.1:
+ - the debug console was giving error, needed to add default material localization for biometric authentication has been fixed
+
 
 ##Features:
 

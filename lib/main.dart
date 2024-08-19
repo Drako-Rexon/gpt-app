@@ -18,10 +18,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 void main() async {
   Provider.debugCheckInvalidValueType = null;
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  await dotenv.load(fileName: "assets/.env");
+  await Future.wait([
+    Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    ),
+    dotenv.load(fileName: "assets/.env")
+  ]);
   runApp(const MainApp());
 }
 
@@ -57,6 +59,9 @@ class _MainAppState extends State<MainApp> {
         ChangeNotifierProvider(create: (_) => GetStatusProvider()),
       ],
       child: MaterialApp(
+        localizationsDelegates: const [
+          DefaultMaterialLocalizations.delegate,
+        ],
         theme: ThemeData(
             // textTheme: TextTheme().apply(displayColor: Colors.white),
             ),
@@ -68,10 +73,12 @@ class _MainAppState extends State<MainApp> {
 
   Future<void> _authenticate() async {
     try {
-      await auth.authenticate(
-          localizedReason: 'Please login to enter the app',
-          options: const AuthenticationOptions(
-              biometricOnly: false, stickyAuth: true));
+      if (await auth.canCheckBiometrics) {
+        await auth.authenticate(
+            localizedReason: 'Please login to enter the app',
+            options: const AuthenticationOptions(
+                biometricOnly: false, stickyAuth: true));
+      }
     } on PlatformException catch (err) {
       popupWindow(context, err.details.toString(), err.message!);
     }
@@ -81,9 +88,9 @@ class _MainAppState extends State<MainApp> {
     List<BiometricType> availableBiometric =
         await auth.getAvailableBiometrics();
 
-    log(availableBiometric.toString());
+    log('available biometric: ${availableBiometric.toString()}');
 
-    if (!mounted) {
+    if (!mounted || availableBiometric.isEmpty) {
       return;
     }
 
