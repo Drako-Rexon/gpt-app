@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
             context,
             MaterialPageRoute(
                 builder: (_) =>
-                    value ? RedirectingPage() : const NoConnectionPage()),
+                    value ? const RedirectingPage() : const NoConnectionPage()),
             (route) => false);
       });
     });

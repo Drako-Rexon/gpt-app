@@ -36,7 +36,6 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   late final LocalAuthentication auth;
-  // bool _supportState = false;
 
   @override
   void initState() {

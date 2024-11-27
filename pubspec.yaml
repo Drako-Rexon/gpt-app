@@ -38,6 +38,9 @@ dependencies:
   chewie: ^1.5.0
   share_plus: ^7.0.2
   video_thumbnail: ^0.5.3
+  libre_doc_converter: ^0.1.1
+  # document converter
+  file_picker: ^8.1.2
 
 dev_dependencies:
   flutter_test:

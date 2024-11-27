@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gemini_app/view/document_converter/document_converter.dart';
 import 'package:gemini_app/view/extras/help_page.dart';
 import 'package:gemini_app/view/homepage/homepage.dart';
 import 'package:gemini_app/view/extras/terms_and_conditions.dart';
@@ -19,12 +20,14 @@ class _RedirectingPageState extends State<RedirectingPage> {
     'Home',
     'To-Do',
     'WhatsApp Saver',
+    'Document converter',
   ];
 
   final List _body = [
     const HomePage(),
     TodoPage(),
     const WhatsappSaver(),
+    const DocumentConverter()
   ];
   int _index = 0;
 

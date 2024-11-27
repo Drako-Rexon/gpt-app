@@ -1,0 +1,3 @@
+Pod::PICKER_MEDIA = false, resp. Pod::PICKER_AUDIO = false, resp. Pod::PICKER_DOCUMENT = false
+
+'Runner' do
